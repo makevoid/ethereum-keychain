@@ -1,0 +1,54 @@
+{
+  "dependencies": {
+    "bignumber.js": "^6.0.0",
+    "bitcoinjs-lib": "^3.3.2",
+    "blockchain-api-basic": "^0.3.2",
+    "es6-promise": "^4.2.4",
+    "isomorphic-fetch": "^2.2.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "*",
+    "jest": "*",
+    "jest-fetch-mock": "*"
+  },
+  "name": "bitcoinjs-keychain",
+  "description": "status: ALPHA",
+  "version": "0.6.0",
+  "main": "keychain.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "automock": false,
+    "setupFiles": [
+      "./specHelper.js"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makevoid/bitcoinjs-keychain.git"
+  },
+  "keywords": [
+    "bitcoin",
+    "wallet",
+    "library",
+    "keychain",
+    "key",
+    "private",
+    "key",
+    "privatekey",
+    "localstorage",
+    "segwit",
+    "segregated",
+    "witness"
+  ],
+  "author": "Francesco 'makevoid' Canessa",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/makevoid/bitcoinjs-keychain/issues"
+  },
+  "homepage": "https://github.com/makevoid/bitcoinjs-keychain#readme"
+}
