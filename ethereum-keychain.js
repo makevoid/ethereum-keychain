@@ -13,8 +13,8 @@ class PrivateKeyLoadError extends KeychainError {
 }
 
 const txAttrsXDai = ({ to, value }) => ({
-  gasPrice: 0, // 1 gwei
-  // gasPrice: "1000000000", // 1 gwei
+  // gasPrice: 0, // for testnets
+  gasPrice: "1000000000", // 1 gwei
   gas:      "21000",
   to:       to,
   value:    value,
@@ -122,6 +122,7 @@ class Keychain {
     info.address = this.address
     info.balance = await this.eth.getBalance(this.address)
     info.balanceEth = this.web3.utils.fromWei(info.balance, "ether")
+    info.balanceCents = Math.round(new Number(info.balanceEth) * 10000) / 100
     info.blockNum = await this.eth.getBlockNumber()
     const block   = await this.eth.getBlock(info.blockNum)
     info.blockHash = block.hash
@@ -162,6 +163,8 @@ class Keychain {
     })
   }
 
+  // TODO: move to test helpers
+
   async selfTXTest() {
     const txHash = await this.send({ to: this.address, value: 1000000000000 })
     console.log("TX:", txHash)
@@ -171,29 +174,4 @@ class Keychain {
 
 module.exports = {
   Keychain: Keychain
-
 }
-
-// new Keychain
-
-// nodejs
-const { readFileSync } = require('fs')
-const pvtKey = readFileSync('./.private-key.txt').toString().trim()
-const wallet = new Keychain({ store: { "__ethereum-keychain_": pvtKey } })
-// const wallet = new Keychain({ store: {} })
-wallet.info()
-
-;(async () => {
-  try {
-    await wallet.netInfo()
-    await wallet.selfTXTest()
-    await wallet.netInfo()
-    const process = require('ps')
-    process.exit()
-  } catch (err) {
-    console.log("Caught async error")
-    console.error(err)
-    console.error(err.stack)
-  }
-})()
-// new Keychain({ store: localStorage }) // browser
