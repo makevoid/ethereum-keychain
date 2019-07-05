@@ -5,10 +5,31 @@ const wif = require('wif')
 // TODO: remove without node
 const { inspect } = require('util')
 
+const RPC_HOST = "34.246.182.38"
+// const RPC_HOST = "localhost"
+
 class KeychainError extends Error { }
 class PrivateKeyLoadError extends KeychainError {
   constructor() { super("PrivateKeyLoadError: Failed to load Private key") }
 }
+
+const txAttrsXDai = ({ to, value }) => ({
+  gasPrice: 0, // 1 gwei
+  // gasPrice: "1000000000", // 1 gwei
+  gas:      "21000",
+  to:       to,
+  value:    value,
+})
+
+const resolveTxHash = (txHashPromise) => (
+  new Promise((resolve, reject) => {
+    const txHashCallback = (txHash) => {
+      console.log("txHash:", txHash)
+      return resolve(txHash)
+    }
+    txHashPromise.on('transactionHash', txHashCallback)
+  })
+)
 
 class Keychain {
   constructor({ store }) {
@@ -41,11 +62,6 @@ class Keychain {
     console.log("privateKeyEth:", privateKeyEth)
     const account = this.web3Accounts.privateKeyToAccount(privateKey)
     this.pvtKeyEth = account.privateKey
-    this.pvtKeyEthStr = `0x${account.privateKey.toString("hex")}`
-    // this.pvtKeyEthStr = account.privateKey.toString("hex")
-    // // TODO: remove throwaway account
-    // const accountThrowaway = this.web3Accounts.create()
-    // console.log("account (throwaway):", inspect(accountThrowaway).slice(0, 85))
     console.log("account:", inspect(account).slice(0, 85))
     return account
   }
@@ -116,56 +132,38 @@ class Keychain {
   // init web3
 
   initWeb3() {
-    const rpcHost = "34.246.182.38"
+    const rpcHost = RPC_HOST
     const rpcPort = "8545" // default
     const web3 = new Web3(`http://${rpcHost}:${rpcPort}`)
     return web3
   }
 
-  async selfTXTest() {
-    const signTx = (txAttrs, privateKey) => {
-      return new Promise((resolve, reject) => {
-        const txCallback = (err, signedTx) => {
-          console.log("signedTx:", signedTx)
-          if (err) return reject(err)
-          if (!signedTx.rawTransaction) return reject(new Error("NoRawTransactionError"))
-          resolve(signedTx.rawTransaction)
-        }
-        this.web3Accounts.signTransaction(txAttrs, privateKey, txCallback)
-      })
-    }
-
-    const txAttrs = {
-      to:   this.address,
-      gasPrice: "1000000000", // 1 gwei
-      // gasPrice: 100000000, // 0.1 gwei
-      gas: "21000",
-      // 1000000000000000000 // 1 eth    ( 1 xdai,    ~ 1$ )
-      value: 1000000000000,   // 0.01 eth ( 0.01 xdai, ~ 1 cent )
-      // value: 10000000000000000,   // 0.01 eth ( 0.01 xdai, ~ 1 cent )
-    }
+  async send({ to, value }) {
     console.log("constructing tx")
-    console.log(this.pvtKeyEthStr)
-    const rawTx = await signTx(txAttrs, this.pvtKeyEth)
-    console.log("rawTx:", rawTx)
+    const txAttrs = txAttrsXDai({ to: this.address, value: 1000000000000 })
+    const rawTx = await this.signTx(txAttrs, this.pvtKeyEth)
+    // console.log("rawTx:", rawTx)
     console.log("submitting tx...")
-    const callback = (error, txReceipt) => {
-      console.log("txReceipt:", txReceipt)
-    }
     const txHashPromise = this.eth.sendSignedTransaction(rawTx)
+    return resolveTxHash(txHashPromise)
+  }
 
+  signTx(txAttrs, privateKey) {
     return new Promise((resolve, reject) => {
-      const txHashCallback = (txHash) => {
-        console.log("txHash:", txHash)
-        return resolve(txHash)
+      const txCallback = (err, signedTx) => {
+        // console.log("signedTx:", signedTx)
+        if (err) return reject(err)
+        if (!signedTx.rawTransaction) return reject(new Error("NoRawTransactionError"))
+        resolve(signedTx.rawTransaction)
       }
-      txHashPromise.on('transactionHash', txHashCallback)
-      // const receiptCallback = (txReceipt) => {
-      //   console.log("txReceipt:", txReceipt)
-      // }
-      // txReceiptPromise.on('receipt', receiptCallback)
-
+      this.web3Accounts.signTransaction(txAttrs, privateKey, txCallback)
     })
+  }
+
+  async selfTXTest() {
+    const txHash = await this.send({ to: this.address, value: 1000000000000 })
+    console.log("TX:", txHash)
+    return true
   }
 }
 
@@ -174,24 +172,22 @@ module.exports = {
 
 }
 
-//
-
 // new Keychain
 
-
+// nodejs
 const { readFileSync } = require('fs')
 const pvtKey = readFileSync('./.private-key.txt').toString().trim()
 const wallet = new Keychain({ store: { "__ethereum-keychain_": pvtKey } })
-// const wallet = new Keychain({ store: { "__ethereum-keychain_": "xxx4ce654ba0eab4e1f93ddd9cc680ce9351fbae3030587c49db36191ac663cc6a9" } })
 // const wallet = new Keychain({ store: {} })
 wallet.info()
 
 ;(async () => {
   try {
     await wallet.netInfo()
-
-    const txHash = await wallet.selfTXTest()
-    console.log("TX:", txHash)
+    await wallet.selfTXTest()
+    await wallet.netInfo()
+    const process = require('ps')
+    process.exit()
   } catch (err) {
     console.log("Caught async error")
     console.error(err)
