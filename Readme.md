@@ -9,3 +9,15 @@ Ethereum wallet js lib
 -- new structure (super oo)
 
 - add tests :D
+
+---
+
+works on node
+
+---
+
+works on cordova
+
+tested
+
+UI - nfc 2 phones transaction
