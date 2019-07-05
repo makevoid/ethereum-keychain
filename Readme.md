@@ -21,3 +21,6 @@ works on cordova
 tested
 
 UI - nfc 2 phones transaction
+
+- xdai
+- BTC LN
