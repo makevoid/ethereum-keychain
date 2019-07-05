@@ -106,6 +106,7 @@ class Keychain {
     // info.chainId = await this.eth.getChainId()
     info.address = this.address
     info.balance = await this.eth.getBalance(this.address)
+    info.balanceEth = this.web3.utils.fromWei(info.balance, "ether")
     info.blockNum = await this.eth.getBlockNumber()
     const block   = await this.eth.getBlock(info.blockNum)
     info.blockHash = block.hash
@@ -140,7 +141,7 @@ class Keychain {
       // gasPrice: 100000000, // 0.1 gwei
       gas: "21000",
       // 1000000000000000000 // 1 eth    ( 1 xdai,    ~ 1$ )
-      value: 10000000000000,   // 0.01 eth ( 0.01 xdai, ~ 1 cent )
+      value: 1000000000000,   // 0.01 eth ( 0.01 xdai, ~ 1 cent )
       // value: 10000000000000000,   // 0.01 eth ( 0.01 xdai, ~ 1 cent )
     }
     console.log("constructing tx")
@@ -148,18 +149,23 @@ class Keychain {
     const rawTx = await signTx(txAttrs, this.pvtKeyEth)
     console.log("rawTx:", rawTx)
     console.log("submitting tx...")
-    const callback = (txReceipt) => {
+    const callback = (error, txReceipt) => {
       console.log("txReceipt:", txReceipt)
     }
-    const txReceiptPromise = this.eth.sendSignedTransaction(rawTx, callback)
-    // const receiptCallback = (txReceipt) => {
-    //   console.log("txReceipt:", txReceipt)
-    // }
-    // txReceiptPromise.on('receipt', receiptCallback)
+    const txHashPromise = this.eth.sendSignedTransaction(rawTx)
 
-    // console.log("submitted")
-    // console.log("tx submitted! - receipt:", txReceipt)
-    return txReceiptPromise
+    return new Promise((resolve, reject) => {
+      const txHashCallback = (txHash) => {
+        console.log("txHash:", txHash)
+        return resolve(txHash)
+      }
+      txHashPromise.on('transactionHash', txHashCallback)
+      // const receiptCallback = (txReceipt) => {
+      //   console.log("txReceipt:", txReceipt)
+      // }
+      // txReceiptPromise.on('receipt', receiptCallback)
+
+    })
   }
 }
 
@@ -184,8 +190,8 @@ wallet.info()
   try {
     await wallet.netInfo()
 
-    await wallet.selfTXTest()
-
+    const txHash = await wallet.selfTXTest()
+    console.log("TX:", txHash)
   } catch (err) {
     console.log("Caught async error")
     console.error(err)
