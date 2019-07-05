@@ -5,7 +5,7 @@
     "bitcoinjs-lib": "^3.3.2",
     "es6-promise": "^4.2.4",
     "isomorphic-fetch": "^2.2.1",
-    "web3": "1.0.0-beta.33",
+    "web3": "1.0.0-beta.46",
     "wif": "^2.0.6"
   },
   "devDependencies": {
