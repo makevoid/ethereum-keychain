@@ -2,8 +2,7 @@ const bitcoin = require('bitcoinjs-lib')
 const bip39 = require("bip39")
 const Web3 = require("web3")
 const wif = require('wif')
-// TODO: remove without node
-const { inspect } = require('util')
+// const { inspect } = require('util')
 
 const RPC_HOST = "34.246.182.38"
 // const RPC_HOST = "localhost"
@@ -62,7 +61,7 @@ class Keychain {
     console.log("privateKeyEth:", privateKeyEth)
     const account = this.web3Accounts.privateKeyToAccount(privateKey)
     this.pvtKeyEth = account.privateKey
-    console.log("account:", inspect(account).slice(0, 85))
+    // console.log("account:", inspect(account).slice(0, 85))
     return account
   }
 
@@ -113,7 +112,7 @@ class Keychain {
   // info
 
   info() {
-    console.log("PrivateKey:", inspect(this.pvtKey).slice(0, 85))
+    // console.log("PrivateKey:", inspect(this.pvtKey).slice(0, 85))
     console.log("Address:",    this.address)
   }
 
@@ -143,6 +142,9 @@ class Keychain {
     const txAttrs = txAttrsXDai({ to: this.address, value: 1000000000000 })
     const rawTx = await this.signTx(txAttrs, this.pvtKeyEth)
     // console.log("rawTx:", rawTx)
+
+    // naive wallet (I like it as it makes sense on a proof of authority public network where the scale is infinite)
+
     console.log("submitting tx...")
     const txHashPromise = this.eth.sendSignedTransaction(rawTx)
     return resolveTxHash(txHashPromise)
