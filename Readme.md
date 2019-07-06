@@ -4,14 +4,13 @@ Ethereum wallet js lib
 
 ---
 
-warning - this is prerelease :D
+this version is targeted for the browsers but if you read the code 
 
-works only on node atm
+(it's short anyway, start from `ethereum-keychain.js`, then check out lib and obviously config if you want to run it)
 
 #### TODO
 
-- implement
--- existing structure (bitcoin keychain one)
--- new structure (super oo)
+- implement btcln (and xdai), implement main chain), implement other *coins (doge, bch)
+- converge on one stable implementation
 
-- add tests :D
+- add tests :D :D :D
