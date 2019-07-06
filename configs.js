@@ -9,7 +9,7 @@ const RPC_HOST = "34.246.182.38"
 // const RPC_HOST = "localhost"
 
 const CONFIGS = {
-  RPC_HOST: RPC_HOST
+  RPC_HOST: RPC_HOST,
 }
 
-module.export = CONFIGS
+module.exports = CONFIGS

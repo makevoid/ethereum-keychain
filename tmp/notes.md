@@ -1,5 +1,16 @@
 # notes:
 
+### Code snippets
+
+
+```js
+// node logging
+const { inspect } = require('util')
+console.log("PrivateKey:", inspect(this.pvtKey).slice(0, 85))
+```
+
+### Other notes
+
 (integration consideration - UX/user-admin - load first 100 in background then what?, if more than 30 found then let the user)
 
 ### notes about dai:
@@ -32,3 +43,9 @@ UI - nfc 2 phones transaction
 
 - xdai
 - BTC LN
+
+
+### other notes:
+
+- using bitcore-lib which has a nicer API, you don't have to pass from WIF, bitcoinjs-lib is not super nice
+- consider switching to pure libsecp256k1 ?

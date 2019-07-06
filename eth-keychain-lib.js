@@ -1,8 +1,8 @@
-const { gasPrice } = "./ethereum-keychain-env"
+const { gasPriceDefault } = require("./eth-keychain-env")
 
 const txAttrsXDai = ({ to, value }) => ({
   // gasPrice: 0, // for testnets
-  gasPrice: gasPrice() || "1000000000", // 1 gwei
+  gasPrice: gasPriceDefault() || "1000000000", // 1 gwei
   gas:      "21000",
   to:       to,
   value:    value,
