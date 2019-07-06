@@ -45,26 +45,7 @@ node eth-keychain-example-node.js
 To run in browser use a local server and point it `./browser-example/` (`./browser-example/index.html`)
 
 
-### notes
+enjoy,
 
----
-
-Currently cordova has not yet added, but it will soon :D
-
-- add tests :D
-
----
-
-works on node
-
----
-
-works on cordova
-
-tested
-
-UI - nfc 2 phones transaction
-
-- xdai
-- BTC LN
+@makevoid
 
