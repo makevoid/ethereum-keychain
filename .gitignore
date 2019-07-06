@@ -1,4 +1,4 @@
 node_modules
 tmp/bundle/*
-browser-example/bundle/*
+browser-example/bundle*
 .private-key.txt

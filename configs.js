@@ -2,7 +2,7 @@
 
 // infura/cloudflare/your-own-node.example...
 
-const RPC_HOST = "34.246.182.38"
+const RPC_HOST = "34.246.186.79"
 
 // use this if you're running your own node on the same machine (your "dev box"):
 

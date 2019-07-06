@@ -2,7 +2,6 @@
 
 ### Code snippets
 
-
 ```js
 // node logging
 const { inspect } = require('util')
@@ -25,17 +24,6 @@ if you run a node (possibly portable) you would want to run a light ethereum cli
 Currently cordova has not yet added, but it will soon :D
 
 - add tests :D
-
----
-
-works on node
-
----
-
-works on cordova
-
-tested
-
 
 ### notes about the project - future
 

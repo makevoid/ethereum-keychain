@@ -52,5 +52,8 @@
   "bugs": {
     "url": "https://github.com/makevoid/bitcoinjs-keychain/issues"
   },
-  "homepage": "https://github.com/makevoid/bitcoinjs-keychain#readme"
+  "homepage": "https://github.com/makevoid/bitcoinjs-keychain#readme",
+  "scripts": {
+    "build": "browserify eth-keychain-example-browser.js -o browser-example/bundle.js"
+  }
 }
