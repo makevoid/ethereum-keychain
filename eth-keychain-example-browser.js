@@ -25,7 +25,7 @@ wallet.info()
 ;(async () => {
   try {
     await wallet.netInfo()
-    await wallet.selfTXTest()
+    await wallet.sendTXSelf()
     await wallet.netInfo()
     const process = require('process')
     process.exit()
