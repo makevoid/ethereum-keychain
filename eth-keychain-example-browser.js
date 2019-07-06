@@ -23,17 +23,12 @@ if (NODE_JS) {
 wallet.info()
 
 ;(async () => {
-  try {
-    await wallet.netInfo()
-    await wallet.sendTXSelf()
-    await wallet.netInfo()
-    const process = require('process')
-    process.exit()
-  } catch (err) {
-    console.log("Caught async error")
-    console.error(err)
-    console.error(err.stack)
-  }
+  console.log("netinfo")
+  await wallet.netInfo()
+  console.log("sendTXSelf")
+  await wallet.sendTXSelf()
+  console.log("netInfo")
+  await wallet.netInfo()
 })()
 
 // new Keychain({ store: localStorage }) // browser
