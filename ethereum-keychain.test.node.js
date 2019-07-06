@@ -1,28 +1,23 @@
 // NOTE:
 // ths test is configured to use real xDAIs
-// #lazyprogrammer #cheapalts
+// #lazyprogrammer #cheapalts #btcln-soon!!
+const c = console // (sorry :D)
 
 const { Keychain } = require('./ethereum-keychain')
-
-// new Keychain
 
 // const NODE_JS = true
 const NODE_JS = false
 
 let wallet
+// wallet = new Keychain({ store: localStorage }) // browser
 
-// nodejs
-if (NODE_JS) {
-  const { readFileSync } = require('fs')
-  const pvtKey = readFileSync('./.private-key.txt').toString().trim()
-  wallet = new Keychain({ store: { "__ethereum-keychain_": pvtKey } })
-} else {
-  wallet = new Keychain({ store: localStorage })
-}
-// const wallet = new Keychain({ store: {} })
+
+const wallet = new Keychain({ store: {} })
+
 wallet.info()
 
 ;(async () => {
+
   try {
     await wallet.netInfo()
     await wallet.selfTXTest()
@@ -30,10 +25,9 @@ wallet.info()
     const process = require('process')
     process.exit()
   } catch (err) {
-    console.log("Caught async error")
-    console.error(err)
-    console.error(err.stack)
+    c.log("Caught async error")
+    c.error(err)
+    c.error(err.stack)
   }
-})()
 
-// new Keychain({ store: localStorage }) // browser
+})()
