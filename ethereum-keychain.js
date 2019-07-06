@@ -8,11 +8,11 @@ const wif     = require('wif')
 const Web3    = require("web3")
 // const { inspect } = require('util')
 
-const { RPC_HOST } require('./configs')
+const { RPC_HOST } = require('./configs')
 
 // exception definition
 
-const { } = require('./eth-keychain-errors')
+const { KeychainError, PrivateKeyLoadError } = require('./eth-keychain-errors')
 
 // main
 
@@ -47,7 +47,7 @@ class Keychain {
     console.log("privateKeyEth:", privateKeyEth)
     const account = this.web3Accounts.privateKeyToAccount(privateKey)
     this.pvtKeyEth = account.privateKey
-    console.log("account:", inspect(account).slice(0, 85))
+    // console.log("account:", inspect(account).slice(0, 85))
     return account
   }
 
@@ -98,7 +98,7 @@ class Keychain {
   // info
 
   info() {
-    console.log("PrivateKey:", inspect(this.pvtKey).slice(0, 85))
+    // console.log("PrivateKey:", inspect(this.pvtKey).slice(0, 85))
     console.log("Address:",    this.address)
   }
 
