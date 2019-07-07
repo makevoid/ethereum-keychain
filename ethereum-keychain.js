@@ -5,7 +5,7 @@ const wif     = require('wif')
 // init web3
 const Web3    = require("web3")
 
-console.log("require('./configs')", require('./configs'))
+// console.log("config", require('./configs'))
 const { RPC_HOST } = require('./configs')
 
 // exception definition
@@ -106,6 +106,7 @@ class Keychain {
     info.blockHash  = block.hash
     if (this.eth.getChainId) info.chainId = await this.eth.getChainId()
     console.log("Info:", JSON.stringify(info, null, 2))
+    return info
   }
 
   // init web3
@@ -163,4 +164,8 @@ class Keychain {
 
 module.exports = {
   Keychain: Keychain
+}
+
+if (window) { // browserify export
+  window.Keychain = Keychain
 }

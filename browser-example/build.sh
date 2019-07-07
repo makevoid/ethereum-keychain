@@ -1,2 +1,2 @@
 # npm i -g browserify
-browserify ../ethereum-keychain.test.node.js -o ./bundle/bundle.js
+browserify ../ethereum-keychain.test.node.js -o ./bundle.js
