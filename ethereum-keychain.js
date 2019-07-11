@@ -143,7 +143,7 @@ class Keychain {
 
   // test helpers: sendMin(), sendTXSelf()
 
-  // send the minimum amount
+  // send a very small amount (1/20 of the tx fee - total transaction cost will be ~0.22 USD cents (or ~0.000022 USD) - a very small amount)
   async sendMin({ to, value }) {
     const txHash = await this.send({ to: to, value: 1000000000000 })
     console.log("TX:", txHash)
