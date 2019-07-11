@@ -6,7 +6,7 @@ const wif     = require('wif')
 const Web3    = require("web3")
 
 // console.log("config", require('./configs'))
-const { RPC_HOST } = require('./configs')
+const { RPC_HOST, RPC_PORT } = require('./configs')
 
 // exception definition
 
@@ -113,15 +113,15 @@ class Keychain {
 
   initWeb3() {
     const rpcHost = RPC_HOST
-    const rpcPort = "8545" // default
-    console.log("RPC_HOST:", rpcHost)
+    const rpcPort = RPC_PORT
+    console.log("RPC_HOST:", rpcHost, "RPC_PORT:", rpcPort)
     const web3 = new Web3(`http://${rpcHost}:${rpcPort}`)
     return web3
   }
 
   async send({ to, value }) {
     console.log("constructing tx")
-    const txAttrs = txAttrsXDai({ to: this.address, value: 1000000000000 })
+    const txAttrs = txAttrsXDai({ to: to, value: 1000000000000 })
     const rawTx = await this.signTx(txAttrs, this.pvtKeyEth)
     // console.log("rawTx:", rawTx)
     console.log("submitting tx...")
