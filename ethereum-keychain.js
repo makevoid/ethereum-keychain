@@ -121,7 +121,7 @@ class Keychain {
 
   async send({ to, value }) {
     console.log("constructing tx")
-    const txAttrs = txAttrsXDai({ to: to, value: 1000000000000 })
+    const txAttrs = txAttrsXDai({ to: to, value: value })
     const rawTx = await this.signTx(txAttrs, this.pvtKeyEth)
     // console.log("rawTx:", rawTx)
     console.log("submitting tx...")
@@ -141,6 +141,16 @@ class Keychain {
     })
   }
 
+  // test helpers: sendMin(), sendTXSelf()
+
+  // send the minimum amount
+  async sendMin({ to, value }) {
+    const txHash = await this.send({ to: to, value: 1000000000000 })
+    console.log("TX:", txHash)
+    return true
+  }
+
+  // send the minimum amount to your address
   async sendTXSelf() {
     const txHash = await this.send({ to: this.address, value: 1000000000000 })
     console.log("TX:", txHash)
