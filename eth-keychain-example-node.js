@@ -1,6 +1,3 @@
-// NOTE:
-// ths test is configured to use real xDAIs
-// #lazyprogrammer #cheapalts #btcln-soon!!
 const { Keychain } = require('./ethereum-keychain')
 
 const { readFileSync } = require('fs')
