@@ -1,19 +1,16 @@
 const { gasPriceDefault } = require('./eth-keychain-lib')
+const { fromWei, toWei }  = require("web3-utils")
 const bitcoin = require('bitcoinjs-lib') // we use btc keys and bip39 (btc keys are a subset of all possible ethereum keys)
 const bip39   = require("bip39")
 const wif     = require('wif')
-// init web3
 const Web3    = require("web3")
 
-// console.log("config", require('./configs'))
 const { RPC_HOST, RPC_PORT } = require('./configs')
 
-// exception definition
-
-const { txAttrsXDai, resolveTxHash } = require('./eth-keychain-lib')
+const { txAttrsCheapEthChains, resolveTxHash } = require('./eth-keychain-lib')
 const { KeychainError, PrivateKeyLoadError } = require('./eth-keychain-errors')
 
-// main
+// main class
 
 class Keychain {
   constructor({ store }) {
@@ -39,7 +36,7 @@ class Keychain {
     const privateKey = wif.decode(this.pvtKey.toWIF()).privateKey
     const privateKeyEth = `${"0x"}${privateKey.toString("hex")}`
     // this.logPrivateKeys({ privateKey, privateKeyEth })
-    const account = this.web3Accounts.privateKeyToAccount(privateKey)
+    const account = this.web3Accounts.privateKeyToAccount(privateKeyEth)
     this.pvtKeyEth = account.privateKey
     // this.logAccount({ account })
     return account
@@ -114,14 +111,32 @@ class Keychain {
   initWeb3() {
     const rpcHost = RPC_HOST
     const rpcPort = RPC_PORT
-    console.log("RPC_HOST:", rpcHost, "RPC_PORT:", rpcPort)
-    const web3 = new Web3(`http://${rpcHost}:${rpcPort}`)
+    let rpcUrl = RPC_HOST
+    if (rpcPort) rpcUrl = `${rpcHost}:${rpcPort}`
+    console.log("rpcUrl:", rpcUrl)
+    const web3 = new Web3(rpcUrl)
     return web3
   }
 
+  async txBalancePreCheck({ value }) {
+    let balance = await this.eth.getBalance(this.address)
+    balance = new Number(balance)
+    const oneGwei = toWei("1", "gwei")
+    if (balance < oneGwei) {
+      console.error("Error - minimum balance not reached, you cannot make a transaction from this address at the moment")
+      process.exit(1)
+    }
+  }
+
+  async txPreChecks({ value }) {
+    await this.txBalancePreCheck({ value })
+  }
+
   async send({ to, value }) {
+    await this.txPreChecks({ value })
+
     console.log("constructing tx")
-    const txAttrs = txAttrsXDai({ to: to, value: value })
+    const txAttrs = txAttrsCheapEthChains({ to: to, value: value })
     const rawTx = await this.signTx(txAttrs, this.pvtKeyEth)
     // console.log("rawTx:", rawTx)
     console.log("submitting tx...")
@@ -176,6 +191,7 @@ module.exports = {
   Keychain: Keychain
 }
 
-if (window) { // browserify export
+
+if (typeof window === 'object') { // browserify export
   window.Keychain = Keychain
 }
