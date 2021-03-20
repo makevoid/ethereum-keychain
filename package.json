@@ -2,10 +2,10 @@
   "dependencies": {
     "bignumber.js": "^6.0.0",
     "bip39": "^3.0.2",
-    "bitcoinjs-lib": "^3.3.2",
+    "bitcoinjs-lib": "^5.2.0",
     "es6-promise": "^4.2.4",
     "isomorphic-fetch": "^2.2.1",
-    "web3": "1.0.0-beta.46",
+    "web3": "^1.3.4",
     "wif": "^2.0.6"
   },
   "devDependencies": {
@@ -13,15 +13,15 @@
     "babel-preset-env": "^1.6.1",
     "babelify": "^8.0.0",
     "browserify": "*",
-    "jest": "*",
+    "jest": "^26.6.3",
     "jest-fetch-mock": "*"
   },
-  "name": "bitcoinjs-keychain",
+  "name": "ethereum-keychain",
   "description": "status: ALPHA",
   "version": "0.6.0",
   "main": "keychain.js",
   "scripts": {
-    "test": "jest"
+    "build": "browserify eth-keychain-example-browser.js -o browser-example/bundle.js"
   },
   "jest": {
     "automock": false,
@@ -52,8 +52,5 @@
   "bugs": {
     "url": "https://github.com/makevoid/bitcoinjs-keychain/issues"
   },
-  "homepage": "https://github.com/makevoid/bitcoinjs-keychain#readme",
-  "scripts": {
-    "build": "browserify eth-keychain-example-browser.js -o browser-example/bundle.js"
-  }
+  "homepage": "https://github.com/makevoid/bitcoinjs-keychain#readme"
 }
