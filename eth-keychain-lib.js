@@ -1,6 +1,7 @@
 const { gasPriceDefault } = require("./eth-keychain-env")
 
-const txAttrsXDai = ({ to, value }) => ({
+// tx attrs with 21k gas and 1 gwei gasprice (good for xdai, cheapeth, etc...)
+const txAttrsCheapEthChains = ({ to, value }) => ({
   // gasPrice: 0, // for testnets
   gasPrice: gasPriceDefault() || "1000000000", // 1 gwei
   gas:      "21000",
@@ -19,6 +20,6 @@ const resolveTxHash = (txHashPromise) => (
 )
 
 module.exports = {
-  txAttrsXDai:   txAttrsXDai,
-  resolveTxHash: resolveTxHash,
+  txAttrsCheapEthChains:  txAttrsCheapEthChains,
+  resolveTxHash:          resolveTxHash,
 }
