@@ -1,15 +1,15 @@
-// this is the default node host used for the library, so you don't have to configure it
+let defaultRPCHost = "https://main-light.eth.linkpool.io" // mainnet
 
-// infura/cloudflare/your-own-node.example...
+if (process.env.CTH === "1") defaultRPCHost = "https://node.cheapeth.org/rpc"
+if (process.env.XDAI === "1") defaultRPCHost = "https://xdai.poanetwork.dev"
 
-// const RPC_HOST = "34.246.186.79"
-const RPC_HOST = "34.246.186.79" // /etc/hosts entry: "34.246.186.79 antani-node.dev"
-// run your node with "parity --chain ~/poa-chain-spec/spec.json --reserved-peers ~/poa-chain-spec/bootnodes.txt --jsonrpc-interface all --jsonrpc-hosts all  --jsonrpc-cors=http://antani.dev:3000/"
-const RPC_PORT = 3000
-// replace antani.dev:3000 with your dev host
+defaultRPCHost = process.env.ETH_RPC_HOST || defaultRPCHost
+const defaultRPCPort = process.env.ETH_RPC_PORT 
 
-// use this if you're running your own node on the same machine (your "dev box"):
+const RPC_HOST = defaultRPCHost
+const RPC_PORT = defaultRPCPort
 
+// for local dev node:
 // const RPC_HOST = "localhost"
 
 const CONFIGS = {
