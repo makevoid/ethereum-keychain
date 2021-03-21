@@ -5,45 +5,43 @@ version for node, browser and cordova
 
 ### why another ethereum keychain lib
 
-this is `bip39` and `bitcoinjs-lib` based for the keychain bit
+this is based on  `bip39` and `bitcoinjs-lib` libraries, this means that you can have a multi-wallet bitcoin and ethereum keychain/wallet
 
-it's very small (implementation-wise)
+#### features
 
-for the full functionality I have to implement next:
-- proper tx code (almost done)
-- hd wallet generation
-- wallet balances loading
+- small
+- bitcoin + ethereum
 
-note that it's still WIP (but very promising)
 
-### Suggestion
+### status
 
-run your own node:
-
-- xdai
-
-and of course you should check out my other repo (bitcoin-ln-keychain) and get a portable lnd + bitcoind node
+WIP
 
 
 ### Current configuration
 
 default storage in node is file, default storage for browser is `localStorage`, default storage for mobile apps is the secure-storage cordova plugin (https://www.npmjs.com/package/cordova-plugin-secure-storage)
 
-(it's short anyway, start from `ethereum-keychain.js`, then check out lib and obviously config if you want to run it)
+
+### Install NPM (from github)
+
+    npm i --save git+https://github.com/makevoid/ethereum-keychain.git
 
 
 ### Run in node
 
-To run the example (that calls `info()` and `sendTXSelf()`) you can use node and run:
+Check the example in this repo `eth-keychain-example-node.js`, copy-paste it in your file (e.g. `main.js`), adjust the `require()` to `require('ethereum-keychain')` and run the sample code: 
 
 ```
-node eth-keychain-example-node.js
+node main.js
 ```
 
 ## Run in browser
 
 To run in browser use a local server and point it `./browser-example/` (`./browser-example/index.html`)
 
+
+---
 
 enjoy,
 
