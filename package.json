@@ -17,9 +17,9 @@
     "jest-fetch-mock": "*"
   },
   "name": "ethereum-keychain",
-  "description": "status: ALPHA",
+  "description": "Ethereum wallet library",
   "version": "0.6.0",
-  "main": "keychain.js",
+  "main": "ethereum-keychain.js",
   "scripts": {
     "build": "browserify eth-keychain-example-browser.js -o browser-example/bundle.js"
   },
